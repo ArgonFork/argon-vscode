@@ -1,8 +1,8 @@
 import { window } from "vscode"
 import * as config from "./config"
 
-export const outputChannel = window.createOutputChannel("Argon")
-outputChannel.appendLine("Argon started")
+export const outputChannel = window.createOutputChannel("Argon Extended")
+outputChannel.appendLine("Argon Extended started")
 
 function beautify(message: string): string {
   const index = message.indexOf(":")
@@ -12,7 +12,7 @@ function beautify(message: string): string {
     message = message.substring(index + 1)
   }
 
-  return "Argon: " + message
+  return "Argon Extended: " + message
 }
 
 export function info(message: string, silent?: boolean) {

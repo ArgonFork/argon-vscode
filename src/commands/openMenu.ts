@@ -7,7 +7,7 @@ export function openMenu(state: State) {
   return vscode.commands.registerCommand("argon.openMenu", () => {
     vscode.window
       .showQuickPick(menu.items(), {
-        title: "Argon " + state.version,
+        title: "Argon Extended " + state.version,
       })
       .then(async (item) => {
         if (!item) {
@@ -41,7 +41,7 @@ export function openMenuError(context: vscode.ExtensionContext, err: string) {
             description: "See the error message for more details",
           },
         ],
-        { title: "Argon" },
+        { title: "Argon Extended" },
       )
     }),
   )

@@ -1,7 +1,7 @@
 {
   "name": "argon",
-  "displayName": "Argon",
-  "description": "Full featured tool for Roblox development",
+  "displayName": "Argon Extended",
+  "description": "Argon Extended - full featured tool for Roblox development",
   "publisher": "Dervex",
   "version": "2.0.20",
   "icon": "assets/logo.png",
@@ -39,7 +39,7 @@
       "activitybar": [
         {
           "id": "argon-explorer",
-          "title": "Argon",
+          "title": "Argon Extended",
           "icon": "assets/logo.png"
         }
       ]
@@ -63,21 +63,21 @@
       {
         "command": "argon.openMenu",
         "title": "Open Menu",
-        "category": "Argon"
+        "category": "Argon Extended"
       },
       {
         "command": "argon.showProperties",
-        "title": "Argon: Show Properties",
+        "title": "Argon Extended: Show Properties",
         "icon": "$(symbol-property)"
       },
       {
         "command": "argon.refreshTree",
-        "title": "Argon: Refresh Explorer",
+        "title": "Argon Extended: Refresh Explorer",
         "icon": "$(refresh)"
       },
       {
         "command": "argon.pickSrcFolder",
-        "title": "Argon: Set Source Folder",
+        "title": "Argon Extended: Set Source Folder",
         "icon": "$(folder-opened)"
       }
     ],
@@ -130,7 +130,7 @@
       }
     ],
     "configuration": {
-      "title": "Argon",
+      "title": "Argon Extended",
       "properties": {
         "argon.autoUpdate": {
           "type": "boolean",
