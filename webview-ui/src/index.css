@@ -218,6 +218,37 @@ body {
   -webkit-appearance: none;
 }
 
+/* ── Enum dropdown ── */
+
+.enum-sel {
+  width: 100%;
+  background: transparent;
+  color: var(--in-fg);
+  border: 1px solid transparent;
+  padding: 1px 4px;
+  font: inherit;
+  font-size: var(--fs-sm);
+  outline: none;
+  border-radius: 2px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath d='M1 2l3 4 3-4' stroke='%23888' stroke-width='1.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+  padding-right: 18px;
+}
+
+.enum-sel:focus {
+  background-color: var(--in-bg);
+  border-color: var(--accent);
+}
+
+.enum-sel option {
+  background: var(--vscode-dropdown-background, #3c3c3c);
+  color: var(--in-fg);
+}
+
 /* ── Boolean toggle ── */
 
 .toggle {

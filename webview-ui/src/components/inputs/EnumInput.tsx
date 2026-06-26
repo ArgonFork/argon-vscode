@@ -1,31 +1,27 @@
-import { VSCodeDropdown, VSCodeOption } from "@vscode/webview-ui-toolkit/react";
-
 interface Props {
   propKey: string;
   value: unknown;
   enumType: string;
   options: string[];
-  onChange: (key: string, value: { __type: "Enum"; enumType: string; name: string }) => void;
+  onChange: (key: string, value: string) => void;
 }
 
-export function EnumInput({ propKey, value, enumType, options, onChange }: Props) {
-  const currentName =
-    value && typeof value === "object"
-      ? String((value as Record<string, unknown>).name ?? "")
-      : "";
-
-  const handleChange = (e: React.FormEvent<HTMLElement>) => {
-    const name = (e.target as HTMLSelectElement).value;
-    onChange(propKey, { __type: "Enum", enumType, name });
-  };
+export function EnumInput({ propKey, value, options, onChange }: Props) {
+  // Argon stores enums as plain strings
+  const current = typeof value === "string" ? value : "";
 
   return (
-    <VSCodeDropdown value={currentName} onChange={handleChange}>
+    <select
+      className="enum-sel"
+      value={current}
+      onChange={(e) => onChange(propKey, e.target.value)}
+    >
+      {!options.includes(current) && current && (
+        <option value={current}>{current}</option>
+      )}
       {options.map((name) => (
-        <VSCodeOption key={name} value={name}>
-          {name}
-        </VSCodeOption>
+        <option key={name} value={name}>{name}</option>
       ))}
-    </VSCodeDropdown>
+    </select>
   );
 }
