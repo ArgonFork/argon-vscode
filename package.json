@@ -29,17 +29,79 @@
   "activationEvents": [
     "onLanguage:lua",
     "onLanguage:luau",
-    "workspaceContains:*.project.json"
+    "workspaceContains:*.project.json",
+    "onView:argon.instanceTree",
+    "onView:argon.propertiesView"
   ],
   "main": "./dist/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "argon-explorer",
+          "title": "Argon",
+          "icon": "assets/logo.png"
+        }
+      ]
+    },
+    "views": {
+      "argon-explorer": [
+        {
+          "id": "argon.instanceTree",
+          "name": "Explorer",
+          "icon": "$(list-tree)"
+        },
+        {
+          "id": "argon.propertiesView",
+          "name": "Properties",
+          "type": "webview",
+          "icon": "$(symbol-property)"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "argon.openMenu",
         "title": "Open Menu",
         "category": "Argon"
+      },
+      {
+        "command": "argon.showProperties",
+        "title": "Argon: Show Properties",
+        "icon": "$(symbol-property)"
+      },
+      {
+        "command": "argon.refreshTree",
+        "title": "Argon: Refresh Explorer",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "argon.pickSrcFolder",
+        "title": "Argon: Set Source Folder",
+        "icon": "$(folder-opened)"
       }
     ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "argon.refreshTree",
+          "when": "view == argon.instanceTree",
+          "group": "navigation"
+        },
+        {
+          "command": "argon.pickSrcFolder",
+          "when": "view == argon.instanceTree",
+          "group": "overflow"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "argon.showProperties",
+          "when": "view == argon.instanceTree && viewItem == folderInstance",
+          "group": "inline"
+        }
+      ]
+    },
     "keybindings": [
       {
         "command": "argon.play",
@@ -136,6 +198,12 @@
           "default": false,
           "description": "Log verbose tracing of the CLI to the output panel",
           "order": 8
+        },
+        "argon.srcFolder": {
+          "type": "string",
+          "default": "src",
+          "description": "Source folder shown in the Argon Explorer. Relative to workspace root or absolute path.",
+          "order": 9
         }
       }
     },
@@ -168,10 +236,12 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run package",
-    "compile": "webpack",
+    "vscode:prepublish": "npm run build:webview && npm run package",
+    "compile": "npm run build:webview && webpack",
     "watch": "webpack --watch",
     "package": "webpack --mode production --devtool hidden-source-map",
+    "build:webview": "cd webview-ui && npm install && npm run build",
+    "watch:webview": "cd webview-ui && npm run watch",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",

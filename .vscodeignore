@@ -1,7 +1,9 @@
 .vscode/**
 .vscode-test/**
 out/**
+!out/webview/**
 node_modules/**
+webview-ui/**
 src/**
 test/**
 scripts/**

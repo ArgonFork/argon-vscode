@@ -12,6 +12,24 @@
 				"reveal": "never",
 				"group": "watchers"
 			},
+			"group": "build"
+		},
+		{
+			"type": "npm",
+			"script": "watch:webview",
+			"problemMatcher": [],
+			"isBackground": true,
+			"presentation": {
+				"reveal": "never",
+				"group": "watchers"
+			},
+			"group": "build"
+		},
+		{
+			"label": "Watch All",
+			"dependsOn": ["npm: watch", "npm: watch:webview"],
+			"isBackground": true,
+			"problemMatcher": [],
 			"group": {
 				"kind": "build",
 				"isDefault": true

@@ -1,0 +1,349 @@
+:root {
+  --bg: var(--vscode-sideBar-background);
+  --fg: var(--vscode-sideBar-foreground, var(--vscode-editor-foreground));
+  --border: var(--vscode-panel-border, #3c3c3c);
+  --in-bg: var(--vscode-input-background);
+  --in-fg: var(--vscode-input-foreground);
+  --in-br: var(--vscode-input-border, transparent);
+  --hdr-bg: var(--vscode-sideBarSectionHeader-background);
+  --hover: var(--vscode-list-hoverBackground);
+  --accent: var(--vscode-focusBorder);
+  --font: var(--vscode-font-family);
+  --fs: var(--vscode-font-size, 13px);
+  --fs-sm: 11px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font);
+  font-size: var(--fs);
+  height: 100vh;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Header ── */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: var(--hdr-bg);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.cls-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.cls-emoji {
+  font-size: 14px;
+  width: auto;
+}
+
+.inst-name {
+  font-weight: 600;
+  font-size: 12px;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cls-name {
+  font-size: 10px;
+  opacity: 0.55;
+  font-style: italic;
+  flex-shrink: 0;
+}
+
+.inst-id {
+  font-size: 9px;
+  opacity: 0.4;
+  font-family: var(--vscode-editor-font-family, monospace);
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 1;
+}
+
+/* ── Scroll area ── */
+
+.scroll {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* ── Categories ── */
+
+.category {
+  border-bottom: 1px solid var(--border);
+}
+
+.cat-hdr {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  cursor: pointer;
+  user-select: none;
+  background: var(--hdr-bg);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.cat-hdr:hover {
+  background: var(--hover);
+}
+
+.chev {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  transition: transform 0.15s;
+  color: var(--fg);
+  opacity: 0.7;
+}
+
+.chev.open {
+  transform: rotate(90deg);
+}
+
+.cat-name {
+  flex: 1;
+}
+
+.cat-ct {
+  opacity: 0.45;
+  font-size: 10px;
+}
+
+/* ── Property rows ── */
+
+.prop-row {
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.prop-row:hover {
+  background: var(--hover);
+}
+
+.prop-name {
+  width: 42%;
+  font-size: var(--fs-sm);
+  padding: 2px 8px;
+  opacity: 0.8;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.prop-val {
+  flex: 1;
+  padding: 2px 4px 2px 2px;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.prop-val .locked {
+  width: 100%;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.prop-name .lock,
+.prop-name .depr {
+  font-size: 9px;
+  margin-right: 3px;
+  opacity: 0.7;
+}
+
+.prop-row.deprecated .prop-name {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* ── Plain text / number inputs ── */
+
+.str-in,
+.num-in {
+  width: 100%;
+  background: transparent;
+  color: var(--in-fg);
+  border: 1px solid transparent;
+  padding: 1px 4px;
+  font: inherit;
+  font-size: var(--fs-sm);
+  outline: none;
+  border-radius: 2px;
+}
+
+.str-in:focus,
+.num-in:focus {
+  background: var(--in-bg);
+  border-color: var(--accent);
+}
+
+.num-in {
+  -moz-appearance: textfield;
+}
+
+.num-in::-webkit-outer-spin-button,
+.num-in::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+/* ── Boolean toggle ── */
+
+.toggle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.toggle input {
+  display: none;
+}
+
+.track {
+  width: 28px;
+  height: 14px;
+  border-radius: 7px;
+  background: var(--border);
+  position: relative;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.track::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--fg);
+  top: 2px;
+  left: 2px;
+  transition: transform 0.15s;
+  opacity: 0.6;
+}
+
+.toggle input:checked + .track {
+  background: var(--accent);
+}
+
+.toggle input:checked + .track::after {
+  transform: translateX(14px);
+  opacity: 1;
+}
+
+/* ── Color input ── */
+
+.color-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+}
+
+.color-input {
+  width: 20px;
+  height: 16px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  cursor: pointer;
+  flex-shrink: 0;
+  background: none;
+}
+
+.color-text {
+  font-size: var(--fs-sm);
+  opacity: 0.8;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Compact vector inputs ── */
+
+.vec-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+}
+
+.vc {
+  font-size: 9px;
+  opacity: 0.5;
+  flex-shrink: 0;
+  padding: 0 1px;
+}
+
+.vi {
+  flex: 1;
+  min-width: 30px;
+  background: transparent;
+  color: var(--in-fg);
+  border: 1px solid transparent;
+  padding: 1px 2px;
+  font: inherit;
+  font-size: 10px;
+  outline: none;
+  border-radius: 2px;
+  -moz-appearance: textfield;
+}
+
+.vi::-webkit-outer-spin-button,
+.vi::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.vi:focus {
+  background: var(--in-bg);
+  border-color: var(--accent);
+}
+
+/* ── CFrame double-row ── */
+
+.cframe {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+}
+
+/* ── Empty state ── */
+
+.empty {
+  padding: 20px 10px;
+  opacity: 0.45;
+  font-size: 11px;
+  font-style: italic;
+}
