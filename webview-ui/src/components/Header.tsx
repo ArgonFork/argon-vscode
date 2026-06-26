@@ -31,8 +31,8 @@ export function Header({ instanceName, className, iconUri, roplicaId }: Props) {
       <span className="inst-name" title={instanceName}>{instanceName}</span>
       <span className="cls-name">{className}</span>
       {roplicaId && (
-        <span className="inst-id" title={`roplica id: ${roplicaId}`}>
-          roplica id: {roplicaId}
+        <span className="inst-id" title={roplicaId}>
+          #{roplicaId.slice(0, 8)}
         </span>
       )}
     </div>

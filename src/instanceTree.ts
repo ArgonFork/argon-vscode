@@ -126,13 +126,18 @@ export class InstanceTreeProvider
       : path.join(wsRoot, configured)
   }
 
-  private readInitMeta(dirPath: string): { className: string } {
+  private readInitMeta(dirPath: string): { className: string; originalName?: string; roplicaId?: string } {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const fs = require("fs") as typeof import("fs")
     const metaPath = path.join(dirPath, "init.meta.json")
     try {
       const raw = JSON.parse(fs.readFileSync(metaPath, "utf8"))
-      return { className: typeof raw.className === "string" ? raw.className : "Folder" }
+      const className = typeof raw.className === "string" ? raw.className : "Folder"
+      const originalName = typeof raw.originalName === "string" ? raw.originalName : undefined
+      const tags: unknown[] = Array.isArray(raw.properties?.Tags) ? raw.properties.Tags : []
+      const roplicaTag = tags.find((t): t is string => typeof t === "string" && t.startsWith("roplica_id@"))
+      const roplicaId = roplicaTag ? roplicaTag.slice("roplica_id@".length) : undefined
+      return { className, originalName, roplicaId }
     } catch {
       return { className: "Folder" }
     }
@@ -173,8 +178,10 @@ export class InstanceTreeProvider
       if (entry.name.startsWith("$.")) return []
 
       if (entry.isDirectory()) {
-        const { className } = this.readInitMeta(fullPath)
-        const item = new InstanceTreeItem(entry.name, className, this.extensionUri, fullPath, true)
+        const { className, originalName, roplicaId } = this.readInitMeta(fullPath)
+        const displayName = originalName ?? entry.name
+        const item = new InstanceTreeItem(displayName, className, this.extensionUri, fullPath, true)
+        if (roplicaId) item.description = `#${roplicaId.slice(0, 8)}`
         item.collapsibleState = this.dirHasInstanceChildren(fullPath)
           ? vscode.TreeItemCollapsibleState.Collapsed
           : vscode.TreeItemCollapsibleState.None
@@ -190,7 +197,9 @@ export class InstanceTreeProvider
       }
 
       if (entry.name.endsWith(".luau") || entry.name.endsWith(".lua")) {
-        const name = entry.name
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const fs = require("fs") as typeof import("fs")
+        const stem = entry.name
           .replace(/\.server\.luau$/, "")
           .replace(/\.client\.luau$/, "")
           .replace(/\.luau$/, "")
@@ -202,7 +211,14 @@ export class InstanceTreeProvider
           ? "LocalScript"
           : "ModuleScript"
 
-        const item = new InstanceTreeItem(name, className, this.extensionUri, fullPath, false)
+        let displayName = stem
+        const sidecar = path.join(dirPath, `${stem}.meta.json`)
+        try {
+          const raw = JSON.parse(fs.readFileSync(sidecar, "utf8"))
+          if (typeof raw.originalName === "string") displayName = raw.originalName
+        } catch { /* no sidecar or no originalName — use stem */ }
+
+        const item = new InstanceTreeItem(displayName, className, this.extensionUri, fullPath, false)
         item.collapsibleState = vscode.TreeItemCollapsibleState.None
         return [item]
       }

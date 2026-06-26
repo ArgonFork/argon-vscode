@@ -63,7 +63,11 @@ export function App() {
         instanceName={instanceName}
         className={className}
         iconUri={iconUri}
-        roplicaId={typeof props.roplica_id === "string" ? props.roplica_id : ""}
+        roplicaId={(() => {
+          const tags = Array.isArray(props.Tags) ? (props.Tags as string[]) : [];
+          const tag = tags.find((t) => typeof t === "string" && t.startsWith("roplica_id@"));
+          return tag ? tag.slice("roplica_id@".length) : "";
+        })()}
       />
       <div className="scroll">
         {categories.map(({ name, entries }) => (
