@@ -339,6 +339,193 @@ body {
   width: 100%;
 }
 
+/* ── Attributes section ── */
+
+.attr-section {
+  border-bottom: 1px solid var(--border);
+}
+
+.attr-add-btn {
+  background: none;
+  border: none;
+  color: var(--fg);
+  opacity: 0.6;
+  cursor: pointer;
+  padding: 0 4px;
+  font-size: 14px;
+  line-height: 1;
+  margin-left: 4px;
+}
+
+.attr-add-btn:hover { opacity: 1; }
+
+.attr-body {
+  font-size: var(--fs-sm);
+}
+
+.attr-row {
+  display: grid;
+  grid-template-columns: 38% 56px 1fr 18px;
+  align-items: center;
+  min-height: 24px;
+  border-bottom: 1px solid var(--border);
+  gap: 2px;
+}
+
+.attr-row:hover { background: var(--hover); }
+
+.attr-key {
+  padding: 2px 8px;
+  opacity: 0.85;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.attr-type {
+  font-size: 9px;
+  opacity: 0.45;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 2px;
+}
+
+.attr-val {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: 2px 2px;
+}
+
+.attr-del {
+  background: none;
+  border: none;
+  color: var(--fg);
+  opacity: 0;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0;
+  line-height: 1;
+  text-align: center;
+}
+
+.attr-row:hover .attr-del { opacity: 0.5; }
+.attr-del:hover { opacity: 1 !important; }
+
+.attr-add-row {
+  display: grid;
+  grid-template-columns: 1fr 80px 20px 20px;
+  gap: 4px;
+  padding: 4px 6px;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.attr-name-in {
+  background: var(--in-bg);
+  color: var(--in-fg);
+  border: 1px solid var(--accent);
+  padding: 2px 4px;
+  font: inherit;
+  font-size: var(--fs-sm);
+  outline: none;
+  border-radius: 2px;
+  width: 100%;
+}
+
+.attr-type-sel {
+  background: var(--in-bg);
+  color: var(--in-fg);
+  border: 1px solid var(--in-br);
+  padding: 2px 2px;
+  font: inherit;
+  font-size: 9px;
+  outline: none;
+  border-radius: 2px;
+  width: 100%;
+}
+
+.attr-confirm {
+  background: none;
+  border: none;
+  color: var(--fg);
+  opacity: 0.7;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0;
+}
+
+.attr-confirm:hover { opacity: 1; }
+
+.attr-empty {
+  padding: 6px 10px;
+  opacity: 0.35;
+  font-size: var(--fs-sm);
+  font-style: italic;
+}
+
+/* ── Tags section ── */
+
+.tags-section {
+  border-bottom: 1px solid var(--border);
+}
+
+.tags-body {
+  padding: 5px 8px;
+}
+
+.tags-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: var(--vscode-badge-background, #4d4d4d);
+  color: var(--vscode-badge-foreground, #fff);
+  border-radius: 10px;
+  padding: 2px 7px 2px 8px;
+  font-size: var(--fs-sm);
+  white-space: nowrap;
+}
+
+.tag-del {
+  background: none;
+  border: none;
+  color: inherit;
+  opacity: 0.5;
+  cursor: pointer;
+  font-size: 11px;
+  padding: 0;
+  line-height: 1;
+}
+
+.tag-del:hover { opacity: 1; }
+
+.tag-in {
+  background: transparent;
+  color: var(--in-fg);
+  border: 1px solid transparent;
+  padding: 2px 4px;
+  font: inherit;
+  font-size: var(--fs-sm);
+  outline: none;
+  border-radius: 10px;
+  width: 90px;
+}
+
+.tag-in::placeholder { opacity: 0.4; }
+
+.tag-in:focus {
+  background: var(--in-bg);
+  border-color: var(--accent);
+}
+
 /* ── Empty state ── */
 
 .empty {

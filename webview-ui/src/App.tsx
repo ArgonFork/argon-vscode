@@ -3,6 +3,8 @@ import { postMessage } from "./vscodeApi";
 import { EmptyState } from "./components/EmptyState";
 import { Header } from "./components/Header";
 import { CategorySection } from "./components/CategorySection";
+import { AttributesSection } from "./components/AttributesSection";
+import { TagsSection } from "./components/TagsSection";
 import { categorizeProps } from "./utils/categorize";
 import type { ExtensionMessage, PropertyMap, ReflectionCatalog } from "./types";
 
@@ -57,17 +59,22 @@ export function App() {
   const { instanceName, className, props, iconUri, catalog } = view;
   const categories = categorizeProps(className, props, catalog);
 
+  const allTags = Array.isArray(props.Tags) ? (props.Tags as string[]) : [];
+  const roplicaId = (() => {
+    const tag = allTags.find((t) => typeof t === "string" && t.startsWith("roplica_id@"));
+    return tag ? tag.slice("roplica_id@".length) : "";
+  })();
+  const attrs = (props.Attributes && typeof props.Attributes === "object")
+    ? (props.Attributes as Record<string, unknown>)
+    : {};
+
   return (
     <div className="container" key={instanceName}>
       <Header
         instanceName={instanceName}
         className={className}
         iconUri={iconUri}
-        roplicaId={(() => {
-          const tags = Array.isArray(props.Tags) ? (props.Tags as string[]) : [];
-          const tag = tags.find((t) => typeof t === "string" && t.startsWith("roplica_id@"));
-          return tag ? tag.slice("roplica_id@".length) : "";
-        })()}
+        roplicaId={roplicaId}
       />
       <div className="scroll">
         {categories.map(({ name, entries }) => (
@@ -80,6 +87,16 @@ export function App() {
             onChange={handleChange}
           />
         ))}
+        <AttributesSection
+          value={attrs}
+          className={className}
+          catalog={catalog}
+          onChange={(v) => handleChange("Attributes", v)}
+        />
+        <TagsSection
+          value={allTags}
+          onChange={(v) => handleChange("Tags", v)}
+        />
       </div>
     </div>
   );

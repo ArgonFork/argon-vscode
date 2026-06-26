@@ -1,6 +1,8 @@
 import type { PropertyMap, ReflectionCatalog, PropDescriptor, PropSpec } from "../types";
 
 const HIDDEN_PROPS = new Set(["UniqueId", "HistoryId"]);
+// Always shown in dedicated sections, never in normal property categories
+const SEPARATE_PROPS = new Set(["Attributes", "Tags"]);
 
 export function effectiveDescriptor(
   catalog: ReflectionCatalog | undefined,
@@ -51,14 +53,6 @@ export function resolvePropSpec(
   return { type: "unknown" };
 }
 
-function filterTagsValue(raw: unknown): string[] | null {
-  if (!Array.isArray(raw)) return null;
-  const visible = (raw as unknown[]).filter(
-    (t) => typeof t === "string" && !t.startsWith("roplica_id@")
-  ) as string[];
-  return visible.length > 0 ? visible : null;
-}
-
 export function categorizeProps(
   className: string,
   props: PropertyMap,
@@ -66,27 +60,12 @@ export function categorizeProps(
 ): Array<{ name: string; entries: [string, unknown][] }> {
   const allKeys = Object.keys(props).filter((k) => {
     if (HIDDEN_PROPS.has(k)) return false;
-    // hide empty Attributes
-    if (k === "Attributes") {
-      const v = props[k];
-      return v && typeof v === "object" && Object.keys(v as object).length > 0;
-    }
-    // filter Tags — hide if only roplica internal IDs remain
-    if (k === "Tags") {
-      return filterTagsValue(props[k]) !== null;
-    }
+    if (SEPARATE_PROPS.has(k)) return false;
     return true;
   });
 
-  // Replace Tags value with the filtered array for display/edit
-  const effectiveProps: PropertyMap = { ...props };
-  if ("Tags" in props) {
-    const filtered = filterTagsValue(props["Tags"]);
-    if (filtered) effectiveProps["Tags"] = filtered;
-  }
-
   if (!catalog) {
-    return [{ name: "Data", entries: allKeys.map((k) => [k, effectiveProps[k]]) }];
+    return [{ name: "Data", entries: allKeys.map((k) => [k, props[k]]) }];
   }
 
   const order = catalog.classes?.[className] ?? [];
@@ -96,7 +75,7 @@ export function categorizeProps(
   for (const key of allKeys) {
     const cat = effectiveDescriptor(catalog, className, key)?.category ?? "Other";
     if (!byCategory.has(cat)) byCategory.set(cat, []);
-    byCategory.get(cat)!.push([key, effectiveProps[key]]);
+    byCategory.get(cat)!.push([key, props[key]]);
   }
 
   for (const entries of byCategory.values()) {
