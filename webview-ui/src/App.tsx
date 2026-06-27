@@ -60,9 +60,12 @@ export function App() {
   const categories = categorizeProps(className, props, catalog);
 
   const allTags = Array.isArray(props.Tags) ? (props.Tags as string[]) : [];
-  const roplicaId = (() => {
-    const tag = allTags.find((t) => typeof t === "string" && t.startsWith("roplica_id@"));
-    return tag ? tag.slice("roplica_id@".length) : "";
+  const uniqueId = (() => {
+    const uid = props.UniqueId;
+    if (uid && typeof uid === "object" && "UniqueId" in uid && typeof (uid as Record<string, unknown>).UniqueId === "string") {
+      return (uid as Record<string, string>).UniqueId;
+    }
+    return "";
   })();
   const attrs = (props.Attributes && typeof props.Attributes === "object")
     ? (props.Attributes as Record<string, unknown>)
@@ -74,7 +77,7 @@ export function App() {
         instanceName={instanceName}
         className={className}
         iconUri={iconUri}
-        roplicaId={roplicaId}
+        uniqueId={uniqueId}
       />
       <div className="scroll">
         {categories.map(({ name, entries }) => (

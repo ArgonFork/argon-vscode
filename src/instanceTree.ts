@@ -126,7 +126,7 @@ export class InstanceTreeProvider
       : path.join(wsRoot, configured)
   }
 
-  private readInitMeta(dirPath: string): { className: string; originalName?: string; roplicaId?: string } {
+  private readInitMeta(dirPath: string): { className: string; originalName?: string; uniqueId?: string } {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const fs = require("fs") as typeof import("fs")
     const metaPath = path.join(dirPath, "init.meta.json")
@@ -134,10 +134,9 @@ export class InstanceTreeProvider
       const raw = JSON.parse(fs.readFileSync(metaPath, "utf8"))
       const className = typeof raw.className === "string" ? raw.className : "Folder"
       const originalName = typeof raw.originalName === "string" ? raw.originalName : undefined
-      const tags: unknown[] = Array.isArray(raw.properties?.Tags) ? raw.properties.Tags : []
-      const roplicaTag = tags.find((t): t is string => typeof t === "string" && t.startsWith("roplica_id@"))
-      const roplicaId = roplicaTag ? roplicaTag.slice("roplica_id@".length) : undefined
-      return { className, originalName, roplicaId }
+      const uid = raw.properties?.UniqueId?.UniqueId
+      const uniqueId = typeof uid === "string" ? uid : undefined
+      return { className, originalName, uniqueId }
     } catch {
       return { className: "Folder" }
     }
@@ -178,10 +177,10 @@ export class InstanceTreeProvider
       if (entry.name.startsWith("$.")) return []
 
       if (entry.isDirectory()) {
-        const { className, originalName, roplicaId } = this.readInitMeta(fullPath)
+        const { className, originalName, uniqueId } = this.readInitMeta(fullPath)
         const displayName = originalName ?? entry.name
         const item = new InstanceTreeItem(displayName, className, this.extensionUri, fullPath, true)
-        if (roplicaId) item.description = `#${roplicaId.slice(0, 8)}`
+        if (uniqueId) item.description = `#${uniqueId.slice(0, 8)}`
         item.collapsibleState = this.dirHasInstanceChildren(fullPath)
           ? vscode.TreeItemCollapsibleState.Collapsed
           : vscode.TreeItemCollapsibleState.None

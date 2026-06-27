@@ -37,7 +37,7 @@ function arrSet(
 }
 
 export function PropertyInput({ propKey, value, spec, catalog, onChange }: Props) {
-  // Tags is always a string array — show filtered (roplica_id@ stripped in categorize)
+  // Tags is always a string array
   if (propKey === "Tags" && Array.isArray(value)) {
     const tags = (value as unknown[]).filter((t): t is string => typeof t === "string");
     return (

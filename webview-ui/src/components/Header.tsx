@@ -2,7 +2,7 @@ interface Props {
   instanceName: string;
   className: string;
   iconUri: string | null;
-  roplicaId: string;
+  uniqueId: string;
 }
 
 const EMOJI_MAP: Record<string, string> = {
@@ -20,7 +20,7 @@ function classEmoji(className: string): string {
   return EMOJI_MAP[className] ?? "⬛";
 }
 
-export function Header({ instanceName, className, iconUri, roplicaId }: Props) {
+export function Header({ instanceName, className, iconUri, uniqueId }: Props) {
   return (
     <div className="header">
       {iconUri ? (
@@ -30,9 +30,9 @@ export function Header({ instanceName, className, iconUri, roplicaId }: Props) {
       )}
       <span className="inst-name" title={instanceName}>{instanceName}</span>
       <span className="cls-name">{className}</span>
-      {roplicaId && (
-        <span className="inst-id" title={roplicaId}>
-          #{roplicaId.slice(0, 8)}
+      {uniqueId && (
+        <span className="inst-id" title={uniqueId}>
+          #{uniqueId.slice(0, 8)}
         </span>
       )}
     </div>
