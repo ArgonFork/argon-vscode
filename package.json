@@ -79,6 +79,12 @@
         "command": "argon.pickSrcFolder",
         "title": "Argon Extended: Set Source Folder",
         "icon": "$(folder-opened)"
+      },
+      {
+        "command": "argon.openViewport",
+        "title": "Open Viewport",
+        "category": "Argon Extended",
+        "icon": "$(device-desktop)"
       }
     ],
     "menus": {
